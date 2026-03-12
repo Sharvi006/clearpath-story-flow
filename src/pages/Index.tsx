@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Timeline, { type TimelineEvent } from "@/components/Timeline";
-import { structureTestimony } from "@/lib/mock-structure";
+import { useToast } from "@/hooks/use-toast";
 import { Loader2, Leaf, FileDown } from "lucide-react";
 import botanicalFlowers from "@/assets/botanical-flowers.png";
 import botanicalBranches from "@/assets/botanical-branches.png";
