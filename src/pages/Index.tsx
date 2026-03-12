@@ -69,7 +69,7 @@ const Index = () => {
         {!events ? (
           /* Input Phase */
           <div className="space-y-8 animate-fade-in-up">
-            <p className="text-center text-muted-foreground font-body text-lg leading-relaxed max-w-md mx-auto font-light">
+            <p className="text-center text-muted-foreground font-body text-lg leading-relaxed max-w-md mx-auto font-normal">
               Take your time. Share what you remember, in whatever order it
               comes to you.
             </p>
