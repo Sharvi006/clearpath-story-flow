@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Timeline, { type TimelineEvent } from "@/components/Timeline";
-import { structureTestimony } from "@/lib/mock-structure";
+import { useToast } from "@/hooks/use-toast";
 import { Loader2, Leaf, FileDown } from "lucide-react";
 import botanicalFlowers from "@/assets/botanical-flowers.png";
 import botanicalBranches from "@/assets/botanical-branches.png";
@@ -12,16 +12,37 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [events, setEvents] = useState<TimelineEvent[] | null>(null);
 
+  const { toast } = useToast();
+
   const handleStructure = async () => {
     if (!text.trim()) return;
     setIsLoading(true);
     setEvents(null);
 
-    await new Promise((r) => setTimeout(r, 2200));
+    try {
+      const response = await fetch("http://127.0.0.1:8000/extract-timeline", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ raw_text: text }),
+      });
 
-    const result = structureTestimony(text);
-    setEvents(result);
-    setIsLoading(false);
+      if (!response.ok) throw new Error(`API error: ${response.status}`);
+
+      const data = await response.json();
+      const parsed: TimelineEvent[] = data.chronological_events.map(
+        (evt: { date: string; description: string; people: string[] }) => ({
+          date: evt.date,
+          description: evt.description,
+          people: evt.people ?? [],
+        })
+      );
+      setEvents(parsed);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      toast({ title: "Failed to structure timeline", description: message, variant: "destructive" });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleReset = () => {
