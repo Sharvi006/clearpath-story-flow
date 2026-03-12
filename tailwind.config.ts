@@ -57,6 +57,15 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        botanical: "hsl(var(--botanical))",
+        blob: {
+          peach: "hsl(var(--blob-peach))",
+          tan: "hsl(var(--blob-tan))",
+        },
+        timeline: {
+          line: "hsl(var(--timeline-line))",
+          dot: "hsl(var(--timeline-dot))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -64,14 +73,8 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        display: ['DM Serif Display', 'serif'],
-        body: ['DM Sans', 'sans-serif'],
-      },
-      colors: {
-        timeline: {
-          line: "hsl(var(--timeline-line))",
-          dot: "hsl(var(--timeline-dot))",
-        },
+        display: ['Cormorant Garamond', 'serif'],
+        body: ['Nunito Sans', 'sans-serif'],
       },
       keyframes: {
         "accordion-down": {
