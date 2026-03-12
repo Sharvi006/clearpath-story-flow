@@ -4,12 +4,8 @@ import { Textarea } from "@/components/ui/textarea";
 import Timeline, { type TimelineEvent } from "@/components/Timeline";
 import { structureTestimony } from "@/lib/mock-structure";
 import { Loader2, Leaf, FileDown } from "lucide-react";
-import {
-  LeafBranch,
-  DelicateFlower,
-  SmallLeaf,
-  PastelBlob,
-} from "@/components/BotanicalArt";
+import botanicalFlowers from "@/assets/botanical-flowers.png";
+import botanicalBranches from "@/assets/botanical-branches.png";
 
 const Index = () => {
   const [text, setText] = useState("");
@@ -35,22 +31,29 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Botanical decorations - top right */}
-      <div className="absolute top-0 right-0 w-48 h-64 opacity-[0.12] pointer-events-none">
-        <PastelBlob className="absolute -top-8 -right-8 w-56 h-56" variant="peach" />
-        <LeafBranch className="absolute top-4 right-4 w-32 h-48 animate-float" />
-      </div>
+      {/* Botanical flowers - top right */}
+      <img
+        src={botanicalFlowers}
+        alt=""
+        aria-hidden="true"
+        className="absolute -top-10 -right-16 w-72 md:w-96 opacity-[0.18] pointer-events-none select-none animate-float"
+      />
 
-      {/* Botanical decorations - bottom left */}
-      <div className="absolute bottom-0 left-0 w-40 h-52 opacity-[0.10] pointer-events-none">
-        <PastelBlob className="absolute -bottom-10 -left-10 w-52 h-52" variant="tan" />
-        <DelicateFlower className="absolute bottom-8 left-6 w-28 h-28" />
-      </div>
+      {/* Botanical branches - bottom left */}
+      <img
+        src={botanicalBranches}
+        alt=""
+        aria-hidden="true"
+        className="absolute -bottom-8 -left-12 w-56 md:w-72 opacity-[0.12] pointer-events-none select-none"
+      />
 
-      {/* Small leaf accent - mid left */}
-      <div className="absolute top-1/3 -left-2 opacity-[0.08] pointer-events-none">
-        <SmallLeaf className="w-16 h-20" />
-      </div>
+      {/* Small flower accent - mid right on timeline */}
+      <img
+        src={botanicalFlowers}
+        alt=""
+        aria-hidden="true"
+        className="absolute top-1/2 -right-20 w-48 opacity-[0.08] pointer-events-none select-none rotate-180"
+      />
 
       <div className="max-w-2xl mx-auto px-6 py-16 md:py-24 relative z-10">
         {/* Header */}
@@ -72,11 +75,6 @@ const Index = () => {
             </p>
 
             <div className="relative">
-              {/* Subtle blob behind textarea */}
-              <PastelBlob
-                className="absolute -top-10 -right-16 w-40 h-40 opacity-30 pointer-events-none"
-                variant="peach"
-              />
               <Textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
@@ -118,7 +116,6 @@ const Index = () => {
               </p>
             </div>
 
-            {/* Timeline with download button */}
             <div className="relative">
               <div className="flex justify-end mb-4 animate-fade-in-up">
                 <Button
