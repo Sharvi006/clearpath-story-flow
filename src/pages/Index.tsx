@@ -60,7 +60,7 @@ const Index = () => {
         <header className="text-center mb-14 animate-fade-in-up">
           <div className="flex items-center justify-center gap-2.5 mb-5">
             <Leaf className="w-5 h-5 text-primary" strokeWidth={1.5} />
-            <h1 className="font-display text-4xl text-foreground tracking-tight font-light">
+            <h1 className="font-display text-4xl text-foreground tracking-tight font-medium">
               Solace
             </h1>
           </div>
@@ -69,7 +69,7 @@ const Index = () => {
         {!events ? (
           /* Input Phase */
           <div className="space-y-8 animate-fade-in-up">
-            <p className="text-center text-muted-foreground font-body text-lg leading-relaxed max-w-md mx-auto font-light">
+            <p className="text-center text-muted-foreground font-body text-lg leading-relaxed max-w-md mx-auto font-normal">
               Take your time. Share what you remember, in whatever order it
               comes to you.
             </p>
@@ -108,10 +108,10 @@ const Index = () => {
           /* Results Phase */
           <div className="space-y-8">
             <div className="text-center animate-fade-in-up">
-              <h2 className="font-display text-2xl text-foreground mb-2 font-light">
+              <h2 className="font-display text-2xl text-foreground mb-2 font-medium">
                 Your Structured Timeline
               </h2>
-              <p className="text-muted-foreground text-sm font-body font-light">
+              <p className="text-muted-foreground text-sm font-body font-normal">
                 Events organized chronologically from your account
               </p>
             </div>
