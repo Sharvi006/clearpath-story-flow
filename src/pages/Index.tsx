@@ -108,7 +108,7 @@ const Index = () => {
           /* Results Phase */
           <div className="space-y-8">
             <div className="text-center animate-fade-in-up">
-              <h2 className="font-display text-2xl text-foreground mb-2 font-light">
+              <h2 className="font-display text-2xl text-foreground mb-2 font-medium">
                 Your Structured Timeline
               </h2>
               <p className="text-muted-foreground text-sm font-body font-light">
