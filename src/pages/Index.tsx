@@ -111,7 +111,7 @@ const Index = () => {
               <h2 className="font-display text-2xl text-foreground mb-2 font-medium">
                 Your Structured Timeline
               </h2>
-              <p className="text-muted-foreground text-sm font-body font-light">
+              <p className="text-muted-foreground text-sm font-body font-normal">
                 Events organized chronologically from your account
               </p>
             </div>
