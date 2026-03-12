@@ -79,7 +79,7 @@ const Index = () => {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="Begin writing here..."
-                className="min-h-[300px] resize-none bg-card/40 border-border/30 text-foreground placeholder:text-muted-foreground/40 font-body text-base leading-relaxed p-6 rounded-2xl focus:ring-primary/20 focus:border-primary/30 transition-all duration-300 relative z-10"
+                className="min-h-[300px] resize-none bg-card/40 border-2 border-foreground/50 text-foreground placeholder:text-muted-foreground/40 font-body text-base leading-relaxed p-6 rounded-2xl focus:ring-primary/20 focus:border-foreground/70 transition-all duration-300 relative z-10"
               />
             </div>
 
