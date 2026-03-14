@@ -1,18 +1,103 @@
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Timeline, { type TimelineEvent } from "@/components/Timeline";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Leaf, FileDown } from "lucide-react";
+import { Loader2, Leaf, FileDown, Mic } from "lucide-react";
 import botanicalFlowers from "@/assets/botanical-flowers.png";
 import botanicalBranches from "@/assets/botanical-branches.png";
+
+interface SpeechRecognitionEvent {
+  results: SpeechRecognitionResultList;
+  resultIndex: number;
+}
+
+interface SpeechRecognitionInstance extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onerror: ((event: { error: string }) => void) | null;
+  onend: (() => void) | null;
+}
 
 const Index = () => {
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [events, setEvents] = useState<TimelineEvent[] | null>(null);
 
+  const [isRecording, setIsRecording] = useState(false);
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
+
   const { toast } = useToast();
+
+  const supportsVoice = typeof window !== "undefined" &&
+    ("SpeechRecognition" in window || "webkitSpeechRecognition" in window);
+
+  const toggleRecording = useCallback(() => {
+    if (!supportsVoice) {
+      toast({
+        title: "Voice input not supported",
+        description: "Your browser doesn't support speech recognition. Please try Chrome or Edge.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (isRecording && recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsRecording(false);
+      return;
+    }
+
+    const SpeechRecognition =
+      (window as unknown as Record<string, unknown>).SpeechRecognition ||
+      (window as unknown as Record<string, unknown>).webkitSpeechRecognition;
+    const recognition = new (SpeechRecognition as new () => SpeechRecognitionInstance)();
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    recognition.lang = "en-US";
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      let transcript = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          transcript += event.results[i][0].transcript;
+        }
+      }
+      if (transcript) {
+        setText((prev) => (prev ? prev + " " + transcript : transcript));
+      }
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      setIsRecording(false);
+      toast({
+        title: "Voice input error",
+        description: "Something went wrong with speech recognition. Please try again.",
+        variant: "destructive",
+      });
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+    setIsRecording(true);
+  }, [isRecording, supportsVoice, toast]);
+
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, []);
 
   const handleStructure = async () => {
     if (!text.trim()) return;
@@ -99,9 +184,23 @@ const Index = () => {
               <Textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                placeholder="Begin writing here..."
-                className="min-h-[300px] resize-none bg-card/40 border-2 border-foreground/50 text-foreground placeholder:text-muted-foreground/40 font-body text-base leading-relaxed p-6 rounded-2xl focus:ring-primary/20 focus:border-foreground/70 transition-all duration-300 relative z-10"
+                placeholder="Begin writing here…"
+                className="min-h-[300px] resize-none bg-card/40 border-2 border-foreground/50 text-foreground placeholder:text-muted-foreground/40 font-body text-base leading-relaxed p-6 pr-16 rounded-2xl focus:ring-primary/20 focus:border-foreground/70 transition-all duration-300 relative z-10"
               />
+
+              {/* Voice input button */}
+              <button
+                type="button"
+                onClick={toggleRecording}
+                aria-label={isRecording ? "Stop recording" : "Start voice input"}
+                className={`absolute top-4 right-4 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm ${
+                  isRecording
+                    ? "bg-destructive/20 text-destructive shadow-[0_0_16px_4px_hsl(var(--destructive)/0.25)] animate-pulse-gentle"
+                    : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+              >
+                <Mic className="w-4 h-4" strokeWidth={1.8} />
+              </button>
             </div>
 
             <div className="flex justify-center">
