@@ -1,11 +1,27 @@
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Timeline, { type TimelineEvent } from "@/components/Timeline";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Leaf, FileDown } from "lucide-react";
+import { Loader2, Leaf, FileDown, Mic } from "lucide-react";
 import botanicalFlowers from "@/assets/botanical-flowers.png";
 import botanicalBranches from "@/assets/botanical-branches.png";
+
+interface SpeechRecognitionEvent {
+  results: SpeechRecognitionResultList;
+  resultIndex: number;
+}
+
+interface SpeechRecognitionInstance extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onerror: ((event: { error: string }) => void) | null;
+  onend: (() => void) | null;
+}
 
 const Index = () => {
   const [text, setText] = useState("");
