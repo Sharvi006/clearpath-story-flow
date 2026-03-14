@@ -28,7 +28,76 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [events, setEvents] = useState<TimelineEvent[] | null>(null);
 
+  const [isRecording, setIsRecording] = useState(false);
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
+
   const { toast } = useToast();
+
+  const supportsVoice = typeof window !== "undefined" &&
+    ("SpeechRecognition" in window || "webkitSpeechRecognition" in window);
+
+  const toggleRecording = useCallback(() => {
+    if (!supportsVoice) {
+      toast({
+        title: "Voice input not supported",
+        description: "Your browser doesn't support speech recognition. Please try Chrome or Edge.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (isRecording && recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsRecording(false);
+      return;
+    }
+
+    const SpeechRecognition =
+      (window as unknown as Record<string, unknown>).SpeechRecognition ||
+      (window as unknown as Record<string, unknown>).webkitSpeechRecognition;
+    const recognition = new (SpeechRecognition as new () => SpeechRecognitionInstance)();
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    recognition.lang = "en-US";
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      let transcript = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          transcript += event.results[i][0].transcript;
+        }
+      }
+      if (transcript) {
+        setText((prev) => (prev ? prev + " " + transcript : transcript));
+      }
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      setIsRecording(false);
+      toast({
+        title: "Voice input error",
+        description: "Something went wrong with speech recognition. Please try again.",
+        variant: "destructive",
+      });
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+    setIsRecording(true);
+  }, [isRecording, supportsVoice, toast]);
+
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, []);
 
   const handleStructure = async () => {
     if (!text.trim()) return;
