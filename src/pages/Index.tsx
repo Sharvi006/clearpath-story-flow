@@ -30,10 +30,10 @@ const Index = () => {
 
       const data = await response.json();
       const parsed: TimelineEvent[] = data.chronological_events.map(
-        (evt: { date: string; description: string; people: string[] }) => ({
-          date: evt.date,
+        (evt: { date_or_time: string; description: string; people_involved: string[] }) => ({
+          date: evt.date_or_time,
           description: evt.description,
-          people: evt.people ?? [],
+          people: evt.people_involved ?? [],
         })
       );
       setEvents(parsed);
