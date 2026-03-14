@@ -184,9 +184,23 @@ const Index = () => {
               <Textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                placeholder="Begin writing here..."
-                className="min-h-[300px] resize-none bg-card/40 border-2 border-foreground/50 text-foreground placeholder:text-muted-foreground/40 font-body text-base leading-relaxed p-6 rounded-2xl focus:ring-primary/20 focus:border-foreground/70 transition-all duration-300 relative z-10"
+                placeholder="Begin writing here…"
+                className="min-h-[300px] resize-none bg-card/40 border-2 border-foreground/50 text-foreground placeholder:text-muted-foreground/40 font-body text-base leading-relaxed p-6 pr-16 rounded-2xl focus:ring-primary/20 focus:border-foreground/70 transition-all duration-300 relative z-10"
               />
+
+              {/* Voice input button */}
+              <button
+                type="button"
+                onClick={toggleRecording}
+                aria-label={isRecording ? "Stop recording" : "Start voice input"}
+                className={`absolute top-4 right-4 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm ${
+                  isRecording
+                    ? "bg-destructive/20 text-destructive shadow-[0_0_16px_4px_hsl(var(--destructive)/0.25)] animate-pulse-gentle"
+                    : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+              >
+                <Mic className="w-4 h-4" strokeWidth={1.8} />
+              </button>
             </div>
 
             <div className="flex justify-center">
