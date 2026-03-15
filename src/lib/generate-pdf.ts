@@ -79,44 +79,79 @@ export function generateLegalPDF(
     y += 4;
   });
 
-  // Verification Certificate
+  // Digital Certificate of Authenticity
   if (verification) {
-    checkPage(45);
-    y += 4;
-    doc.setDrawColor(200);
+    checkPage(70);
+    y += 6;
+
+    // Double-line border top
+    doc.setDrawColor(60);
+    doc.setLineWidth(0.6);
     doc.line(margin, y, pageW - margin, y);
+    doc.setLineWidth(0.2);
+    doc.line(margin, y + 1.5, pageW - margin, y + 1.5);
     y += 10;
 
+    // Certificate title
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
-    doc.text("Digital Verification Certificate", margin, y);
+    doc.setFontSize(16);
+    doc.setTextColor(0);
+    doc.text("DIGITAL CERTIFICATE OF AUTHENTICITY", pageW / 2, y, { align: "center" });
     y += 8;
 
     doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(100);
+    doc.text("This section constitutes a tamper-evident cryptographic record.", pageW / 2, y, { align: "center" });
+    doc.setTextColor(0);
+    y += 10;
+
+    // Timestamp
+    doc.setFont("helvetica", "normal");
     doc.setFontSize(9);
-    doc.text("Timestamp:", margin, y);
+    doc.text("GENERATED AT:", margin, y);
+    y += 5;
     doc.setFont("helvetica", "bold");
-    doc.text(verification.generatedAt, margin + 25, y);
+    doc.setFontSize(10);
+    doc.text(verification.generatedAt, margin, y);
+    y += 9;
+
+    // SHA-256 Hash
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.text("SHA-256 CRYPTOGRAPHIC HASH:", margin, y);
     y += 6;
 
-    doc.setFont("helvetica", "normal");
-    doc.text("SHA-256 Hash:", margin, y);
-    y += 5;
+    // Hash in bordered box
+    doc.setDrawColor(160);
+    doc.setFillColor(245, 245, 245);
+    const hashLines = doc.splitTextToSize(verification.hash, contentW - 10);
+    const boxH = hashLines.length * 4.5 + 6;
+    doc.roundedRect(margin, y - 3, contentW, boxH, 1.5, 1.5, "FD");
 
-    doc.setFont("courier", "normal");
-    doc.setFontSize(7.5);
-    const hashLines = doc.splitTextToSize(verification.hash, contentW);
-    doc.text(hashLines, margin, y);
-    y += hashLines.length * 4 + 6;
+    doc.setFont("courier", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(30);
+    doc.text(hashLines, margin + 5, y + 1);
+    doc.setTextColor(0);
+    y += boxH + 6;
 
+    // Disclaimer
     doc.setFont("helvetica", "italic");
-    doc.setFontSize(7.5);
-    doc.setTextColor(130);
-    doc.text(
-      "This hash cryptographically verifies the integrity of the above timeline at the stated timestamp.",
-      margin,
-      y
-    );
+    doc.setFontSize(7);
+    doc.setTextColor(120);
+    const disclaimer = "This SHA-256 hash cryptographically binds the above timeline content to the stated timestamp. Any modification to the original data will produce a different hash, thereby evidencing tampering.";
+    const disclaimerLines = doc.splitTextToSize(disclaimer, contentW);
+    doc.text(disclaimerLines, margin, y);
+    y += disclaimerLines.length * 3.5 + 4;
+
+    // Double-line border bottom
+    doc.setTextColor(0);
+    doc.setDrawColor(60);
+    doc.setLineWidth(0.2);
+    doc.line(margin, y, pageW - margin, y);
+    doc.setLineWidth(0.6);
+    doc.line(margin, y + 1.5, pageW - margin, y + 1.5);
   }
 
   doc.save("solace-timeline.pdf");
