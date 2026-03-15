@@ -256,6 +256,42 @@ const Index = () => {
               <Timeline events={events} />
             </div>
 
+            {/* Digital Verification Certificate */}
+            {verification && (
+              <div className="animate-fade-in-up rounded-2xl border border-primary/20 bg-card/60 backdrop-blur-sm p-6 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+
+                <div className="flex items-center gap-2 mb-4">
+                  <ShieldCheck className="w-5 h-5 text-primary" strokeWidth={1.5} />
+                  <h3 className="font-display text-lg font-semibold text-foreground tracking-wide">
+                    Digital Verification
+                  </h3>
+                </div>
+
+                <div className="space-y-3">
+                  <div>
+                    <span className="text-xs uppercase tracking-widest text-muted-foreground font-body">
+                      Timestamp
+                    </span>
+                    <p className="text-sm text-foreground font-body mt-0.5">
+                      {verification.generatedAt}
+                    </p>
+                  </div>
+
+                  <div>
+                    <span className="text-xs uppercase tracking-widest text-muted-foreground font-body">
+                      SHA-256 Hash
+                    </span>
+                    <p className="text-xs text-foreground/80 font-mono mt-1 break-all leading-relaxed bg-muted/40 rounded-lg px-3 py-2 border border-border/30">
+                      {verification.hash}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+              </div>
+            )}
+
             <div className="flex justify-center pt-4 animate-fade-in-up animate-fade-in-up-delay-5">
               <Button
                 variant="outline"
