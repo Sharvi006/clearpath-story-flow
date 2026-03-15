@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import Timeline, { type TimelineEvent } from "@/components/Timeline";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Leaf, FileDown, Mic, ShieldCheck } from "lucide-react";
+import { generateLegalPDF } from "@/lib/generate-pdf";
 import botanicalFlowers from "@/assets/botanical-flowers.png";
 import botanicalBranches from "@/assets/botanical-branches.png";
 
@@ -248,6 +249,7 @@ const Index = () => {
                   variant="ghost"
                   size="sm"
                   className="text-muted-foreground hover:text-foreground gap-1.5 font-body text-xs font-normal"
+                  onClick={() => generateLegalPDF(events, verification)}
                 >
                   <FileDown className="w-4 h-4" />
                   Download Legal PDF
