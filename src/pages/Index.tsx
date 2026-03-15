@@ -117,6 +117,7 @@ const Index = () => {
       if (!response.ok) throw new Error(`API error: ${response.status}`);
 
       const data = await response.json();
+      console.log("[Solace] Full API response:", JSON.stringify(data, null, 2));
       const parsed: TimelineEvent[] = data.chronological_events.map(
         (evt: { date_or_time: string; description: string; people_involved: string[] }) => ({
           date: evt.date_or_time,
@@ -125,8 +126,11 @@ const Index = () => {
         })
       );
       setEvents(parsed);
-      if (data.generated_at && data.cryptographic_hash) {
-        setVerification({ generatedAt: data.generated_at, hash: data.cryptographic_hash });
+      const genAt = data.generated_at ?? data.generatedAt ?? null;
+      const hash = data.cryptographic_hash ?? data.cryptographicHash ?? data.sha256_hash ?? null;
+      console.log("[Solace] Verification fields:", { genAt, hash });
+      if (genAt && hash) {
+        setVerification({ generatedAt: genAt, hash });
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Unknown error";
