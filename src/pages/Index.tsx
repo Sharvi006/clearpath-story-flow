@@ -137,6 +137,7 @@ const Index = () => {
 
   const handleReset = () => {
     setEvents(null);
+    setVerification(null);
     setText("");
   };
 
