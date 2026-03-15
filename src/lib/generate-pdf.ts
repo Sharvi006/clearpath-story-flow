@@ -10,7 +10,6 @@ export function generateLegalPDF(
   events: TimelineEvent[],
   verification: VerificationData | null
 ) {
-  console.log("[PDF] verification data:", verification);
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
   const margin = 20;
