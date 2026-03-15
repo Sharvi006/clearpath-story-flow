@@ -27,6 +27,7 @@ const Index = () => {
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [events, setEvents] = useState<TimelineEvent[] | null>(null);
+  const [verification, setVerification] = useState<{ generatedAt: string; hash: string } | null>(null);
 
   const [isRecording, setIsRecording] = useState(false);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
