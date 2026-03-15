@@ -104,6 +104,7 @@ const Index = () => {
     if (!text.trim()) return;
     setIsLoading(true);
     setEvents(null);
+    setVerification(null);
 
     try {
       const response = await fetch("http://127.0.0.1:8000/extract-timeline", {
@@ -123,6 +124,9 @@ const Index = () => {
         })
       );
       setEvents(parsed);
+      if (data.generated_at && data.cryptographic_hash) {
+        setVerification({ generatedAt: data.generated_at, hash: data.cryptographic_hash });
+      }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Unknown error";
       toast({ title: "Failed to structure timeline", description: message, variant: "destructive" });
