@@ -253,7 +253,10 @@ const Index = () => {
                   variant="ghost"
                   size="sm"
                   className="text-muted-foreground hover:text-foreground gap-1.5 font-body text-xs font-normal"
-                  onClick={() => generateLegalPDF(events, verification)}
+                  onClick={() => {
+                    console.log("[Solace] PDF button clicked. verification state:", JSON.stringify(verification));
+                    generateLegalPDF(events, verification);
+                  }}
                 >
                   <FileDown className="w-4 h-4" />
                   Download Legal PDF

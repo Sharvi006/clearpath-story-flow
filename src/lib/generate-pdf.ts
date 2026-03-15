@@ -80,6 +80,7 @@ export function generateLegalPDF(
   });
 
   // Digital Certificate of Authenticity
+  console.log("[Solace PDF] verification param:", JSON.stringify(verification));
   if (verification) {
     checkPage(70);
     y += 6;
