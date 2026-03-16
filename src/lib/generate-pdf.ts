@@ -6,9 +6,16 @@ interface VerificationData {
   hash: string;
 }
 
-export function generateLegalPDF(
+interface Violation {
+  law_section: string;
+  reasoning: string;
+}
+
+export async function generateLegalPDF(
   events: TimelineEvent[],
-  verification: VerificationData | null
+  verification: VerificationData | null,
+  isOfficerMode: boolean = false,
+  potentialViolations: Violation[] | null = null
 ) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
@@ -24,10 +31,27 @@ export function generateLegalPDF(
     if (y + needed > 277) addPage();
   };
 
+  // Emblem for Officer Mode
+  if (isOfficerMode) {
+    try {
+      const img = new Image();
+      img.src = "/emblem.png";
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+      // Draw emblem centered
+      doc.addImage(img, 'PNG', pageW / 2 - 12.5, y, 25, 33);
+      y += 40;
+    } catch(e) {
+      console.error("Failed to load emblem for PDF", e);
+    }
+  }
+
   // Title
   doc.setFont("helvetica", "bold");
   doc.setFontSize(22);
-  doc.text("Solace — Structured Timeline", pageW / 2, y, { align: "center" });
+  doc.text(isOfficerMode ? "Legal Assessment Report" : "Solace — Structured Timeline", pageW / 2, y, { align: "center" });
   y += 10;
 
   doc.setFont("helvetica", "normal");
@@ -78,6 +102,42 @@ export function generateLegalPDF(
 
     y += 4;
   });
+
+  // Suggested Charges (Officer Mode Only)
+  if (isOfficerMode && potentialViolations && potentialViolations.length > 0) {
+    checkPage(40);
+    y += 10;
+    
+    // Divider
+    doc.setDrawColor(200);
+    doc.line(margin, y, pageW - margin, y);
+    y += 10;
+
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text("Suggested Charges", margin, y);
+    y += 8;
+
+    potentialViolations.forEach((violation) => {
+      checkPage(25);
+      
+      // Law Section
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(180, 0, 0); // Red-ish for warning
+      doc.text(violation.law_section, margin, y);
+      doc.setTextColor(0);
+      y += 5;
+
+      // Reasoning
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      const lines = doc.splitTextToSize(violation.reasoning, contentW - 5);
+      checkPage(lines.length * 4.5 + 6);
+      doc.text(lines, margin + 5, y);
+      y += lines.length * 4.5 + 4;
+    });
+  }
 
   // Digital Certificate of Authenticity
   console.log("[Solace PDF] verification param:", JSON.stringify(verification));
