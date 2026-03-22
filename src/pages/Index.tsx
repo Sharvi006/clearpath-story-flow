@@ -159,26 +159,31 @@ const Index = () => {
   };
 
   return (
-    <div className={`min-h-screen relative overflow-hidden transition-colors duration-500 ease-in-out ${isOfficerMode ? "bg-slate-950 text-slate-100" : "bg-background text-foreground"}`}>
-      {/* Botanical flowers - top right */}
-      {!isOfficerMode && (
-        <img
-          src={botanicalFlowers}
-          alt=""
-          aria-hidden="true"
-          className="absolute -top-10 -right-16 w-72 md:w-96 opacity-[0.18] pointer-events-none select-none animate-float"
-        />
+    <div className={`min-h-screen relative overflow-hidden transition-colors duration-500 ease-in-out ${isOfficerMode ? "bg-[hsl(220,40%,12%)] text-slate-100" : "bg-background text-foreground"}`}>
+      {/* Blue gradient overlay for officer mode */}
+      {isOfficerMode && (
+        <div className="absolute inset-0 z-[1] pointer-events-none bg-gradient-to-br from-[hsl(220,60%,20%/0.85)] via-[hsl(230,50%,15%/0.7)] to-[hsl(240,40%,10%/0.9)]" />
       )}
 
-      {/* Botanical branches - bottom left */}
-      {!isOfficerMode && (
-        <img
-          src={botanicalBranches}
-          alt=""
-          aria-hidden="true"
-          className="absolute -bottom-8 -left-12 w-56 md:w-72 opacity-[0.12] pointer-events-none select-none"
-        />
-      )}
+      {/* Botanical flowers - top right (always visible) */}
+      <img
+        src={botanicalFlowers}
+        alt=""
+        aria-hidden="true"
+        className={`absolute -top-10 -right-16 w-72 md:w-96 pointer-events-none select-none animate-float ${
+          isOfficerMode ? "opacity-[0.12] mix-blend-screen" : "opacity-[0.18]"
+        }`}
+      />
+
+      {/* Botanical branches - bottom left (always visible) */}
+      <img
+        src={botanicalBranches}
+        alt=""
+        aria-hidden="true"
+        className={`absolute -bottom-8 -left-12 w-56 md:w-72 pointer-events-none select-none ${
+          isOfficerMode ? "opacity-[0.08] mix-blend-screen" : "opacity-[0.12]"
+        }`}
+      />
 
       {/* Officer Mode Watermark */}
       {isOfficerMode && (
@@ -192,18 +197,22 @@ const Index = () => {
         </div>
       )}
 
-      {/* Small flower accent - mid right on timeline */}
-      {!isOfficerMode && (
-        <img
-          src={botanicalFlowers}
-          alt=""
-          aria-hidden="true"
-          className="absolute top-1/2 -right-20 w-48 opacity-[0.08] pointer-events-none select-none rotate-180"
-        />
-      )}
+      {/* Small flower accent - mid right on timeline (always visible) */}
+      <img
+        src={botanicalFlowers}
+        alt=""
+        aria-hidden="true"
+        className={`absolute top-1/2 -right-20 w-48 pointer-events-none select-none rotate-180 ${
+          isOfficerMode ? "opacity-[0.06] mix-blend-screen" : "opacity-[0.08]"
+        }`}
+      />
 
       {/* Officer Mode Toggle Wrapper */}
-      <div className="absolute top-6 right-6 z-20 flex items-center gap-3 bg-card/40 backdrop-blur-sm px-4 py-2 rounded-full border border-border/40 shadow-sm animate-fade-in-up">
+      <div className={`absolute top-6 right-6 z-20 flex items-center gap-3 backdrop-blur-md px-4 py-2 rounded-full border shadow-sm animate-fade-in-up ${
+        isOfficerMode
+          ? "bg-[hsl(220,40%,20%/0.5)] border-[hsl(220,60%,50%/0.2)] shadow-[0_4px_30px_hsl(220,60%,30%/0.15)]"
+          : "bg-card/40 border-border/40"
+      }`}>
         <label htmlFor="officer-mode" className={`text-sm font-medium tracking-wide ${isOfficerMode ? 'text-slate-300' : 'text-muted-foreground'}`}>
           Officer Mode
         </label>
@@ -248,10 +257,10 @@ const Index = () => {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="Begin writing here…"
-                className={`min-h-[300px] resize-none border-2 font-body text-base leading-relaxed p-6 pr-16 rounded-2xl transition-all duration-300 relative z-10 ${
+                className={`min-h-[300px] resize-none border font-body text-base leading-relaxed p-6 pr-16 rounded-2xl transition-all duration-300 relative z-10 ${
                   isOfficerMode
-                    ? "bg-slate-900/60 border-slate-700 text-slate-100 placeholder:text-slate-500 focus:ring-blue-500/20 focus:border-blue-500"
-                    : "bg-card/40 border-foreground/50 text-foreground placeholder:text-muted-foreground/40 focus:ring-primary/20 focus:border-foreground/70"
+                    ? "bg-[hsl(220,40%,18%/0.5)] backdrop-blur-xl border-[hsl(220,50%,40%/0.25)] text-slate-100 placeholder:text-slate-500 focus:ring-blue-500/20 focus:border-[hsl(220,60%,50%/0.4)] shadow-[0_4px_30px_hsl(220,60%,20%/0.2)]"
+                    : "bg-card/40 border-foreground/50 text-foreground placeholder:text-muted-foreground/40 focus:ring-primary/20 focus:border-foreground/70 border-2"
                 }`}
               />
 
@@ -327,7 +336,7 @@ const Index = () => {
             {verification && (
               <div className={`animate-fade-in-up rounded-2xl border p-6 relative overflow-hidden ${
                 isOfficerMode 
-                  ? "bg-slate-900 border-blue-500/20 shadow-lg" 
+                  ? "bg-[hsl(220,40%,18%/0.45)] backdrop-blur-xl border-[hsl(220,50%,40%/0.2)] shadow-[0_8px_32px_hsl(220,60%,20%/0.25)]" 
                   : "border-primary/20 bg-card/60 backdrop-blur-sm"
               }`}>
                 <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent to-transparent ${isOfficerMode ? "via-blue-500/40" : "via-primary/40"}`} />
@@ -377,7 +386,7 @@ const Index = () => {
                   </h3>
                 </div>
                 {potentialViolations.map((violation, idx) => (
-                  <div key={idx} className="bg-slate-900 border border-slate-700/60 rounded-xl p-5 shadow-sm relative overflow-hidden">
+                  <div key={idx} className="bg-[hsl(220,40%,18%/0.45)] backdrop-blur-xl border border-[hsl(220,50%,40%/0.2)] rounded-xl p-5 shadow-[0_4px_30px_hsl(220,60%,20%/0.15)] relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-1 h-full bg-amber-500/80" />
                     <div className="pl-3">
                       <h4 className="font-display text-base font-bold text-amber-400 mb-1.5">
