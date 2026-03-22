@@ -336,7 +336,7 @@ const Index = () => {
             {verification && (
               <div className={`animate-fade-in-up rounded-2xl border p-6 relative overflow-hidden ${
                 isOfficerMode 
-                  ? "bg-slate-900 border-blue-500/20 shadow-lg" 
+                  ? "bg-[hsl(220,40%,18%/0.45)] backdrop-blur-xl border-[hsl(220,50%,40%/0.2)] shadow-[0_8px_32px_hsl(220,60%,20%/0.25)]" 
                   : "border-primary/20 bg-card/60 backdrop-blur-sm"
               }`}>
                 <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent to-transparent ${isOfficerMode ? "via-blue-500/40" : "via-primary/40"}`} />
