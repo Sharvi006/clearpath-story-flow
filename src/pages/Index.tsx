@@ -257,10 +257,10 @@ const Index = () => {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="Begin writing here…"
-                className={`min-h-[300px] resize-none border-2 font-body text-base leading-relaxed p-6 pr-16 rounded-2xl transition-all duration-300 relative z-10 ${
+                className={`min-h-[300px] resize-none border font-body text-base leading-relaxed p-6 pr-16 rounded-2xl transition-all duration-300 relative z-10 ${
                   isOfficerMode
-                    ? "bg-slate-900/60 border-slate-700 text-slate-100 placeholder:text-slate-500 focus:ring-blue-500/20 focus:border-blue-500"
-                    : "bg-card/40 border-foreground/50 text-foreground placeholder:text-muted-foreground/40 focus:ring-primary/20 focus:border-foreground/70"
+                    ? "bg-[hsl(220,40%,18%/0.5)] backdrop-blur-xl border-[hsl(220,50%,40%/0.25)] text-slate-100 placeholder:text-slate-500 focus:ring-blue-500/20 focus:border-[hsl(220,60%,50%/0.4)] shadow-[0_4px_30px_hsl(220,60%,20%/0.2)]"
+                    : "bg-card/40 border-foreground/50 text-foreground placeholder:text-muted-foreground/40 focus:ring-primary/20 focus:border-foreground/70 border-2"
                 }`}
               />
 
