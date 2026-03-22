@@ -208,7 +208,11 @@ const Index = () => {
       />
 
       {/* Officer Mode Toggle Wrapper */}
-      <div className="absolute top-6 right-6 z-20 flex items-center gap-3 bg-card/40 backdrop-blur-sm px-4 py-2 rounded-full border border-border/40 shadow-sm animate-fade-in-up">
+      <div className={`absolute top-6 right-6 z-20 flex items-center gap-3 backdrop-blur-md px-4 py-2 rounded-full border shadow-sm animate-fade-in-up ${
+        isOfficerMode
+          ? "bg-[hsl(220,40%,20%/0.5)] border-[hsl(220,60%,50%/0.2)] shadow-[0_4px_30px_hsl(220,60%,30%/0.15)]"
+          : "bg-card/40 border-border/40"
+      }`}>
         <label htmlFor="officer-mode" className={`text-sm font-medium tracking-wide ${isOfficerMode ? 'text-slate-300' : 'text-muted-foreground'}`}>
           Officer Mode
         </label>
