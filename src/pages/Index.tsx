@@ -159,26 +159,31 @@ const Index = () => {
   };
 
   return (
-    <div className={`min-h-screen relative overflow-hidden transition-colors duration-500 ease-in-out ${isOfficerMode ? "bg-slate-950 text-slate-100" : "bg-background text-foreground"}`}>
-      {/* Botanical flowers - top right */}
-      {!isOfficerMode && (
-        <img
-          src={botanicalFlowers}
-          alt=""
-          aria-hidden="true"
-          className="absolute -top-10 -right-16 w-72 md:w-96 opacity-[0.18] pointer-events-none select-none animate-float"
-        />
+    <div className={`min-h-screen relative overflow-hidden transition-colors duration-500 ease-in-out ${isOfficerMode ? "bg-[hsl(220,40%,12%)] text-slate-100" : "bg-background text-foreground"}`}>
+      {/* Blue gradient overlay for officer mode */}
+      {isOfficerMode && (
+        <div className="absolute inset-0 z-[1] pointer-events-none bg-gradient-to-br from-[hsl(220,60%,20%/0.85)] via-[hsl(230,50%,15%/0.7)] to-[hsl(240,40%,10%/0.9)]" />
       )}
 
-      {/* Botanical branches - bottom left */}
-      {!isOfficerMode && (
-        <img
-          src={botanicalBranches}
-          alt=""
-          aria-hidden="true"
-          className="absolute -bottom-8 -left-12 w-56 md:w-72 opacity-[0.12] pointer-events-none select-none"
-        />
-      )}
+      {/* Botanical flowers - top right (always visible) */}
+      <img
+        src={botanicalFlowers}
+        alt=""
+        aria-hidden="true"
+        className={`absolute -top-10 -right-16 w-72 md:w-96 pointer-events-none select-none animate-float ${
+          isOfficerMode ? "opacity-[0.12] mix-blend-screen" : "opacity-[0.18]"
+        }`}
+      />
+
+      {/* Botanical branches - bottom left (always visible) */}
+      <img
+        src={botanicalBranches}
+        alt=""
+        aria-hidden="true"
+        className={`absolute -bottom-8 -left-12 w-56 md:w-72 pointer-events-none select-none ${
+          isOfficerMode ? "opacity-[0.08] mix-blend-screen" : "opacity-[0.12]"
+        }`}
+      />
 
       {/* Officer Mode Watermark */}
       {isOfficerMode && (
@@ -192,15 +197,15 @@ const Index = () => {
         </div>
       )}
 
-      {/* Small flower accent - mid right on timeline */}
-      {!isOfficerMode && (
-        <img
-          src={botanicalFlowers}
-          alt=""
-          aria-hidden="true"
-          className="absolute top-1/2 -right-20 w-48 opacity-[0.08] pointer-events-none select-none rotate-180"
-        />
-      )}
+      {/* Small flower accent - mid right on timeline (always visible) */}
+      <img
+        src={botanicalFlowers}
+        alt=""
+        aria-hidden="true"
+        className={`absolute top-1/2 -right-20 w-48 pointer-events-none select-none rotate-180 ${
+          isOfficerMode ? "opacity-[0.06] mix-blend-screen" : "opacity-[0.08]"
+        }`}
+      />
 
       {/* Officer Mode Toggle Wrapper */}
       <div className="absolute top-6 right-6 z-20 flex items-center gap-3 bg-card/40 backdrop-blur-sm px-4 py-2 rounded-full border border-border/40 shadow-sm animate-fade-in-up">
