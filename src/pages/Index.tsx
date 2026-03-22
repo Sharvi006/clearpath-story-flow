@@ -386,7 +386,7 @@ const Index = () => {
                   </h3>
                 </div>
                 {potentialViolations.map((violation, idx) => (
-                  <div key={idx} className="bg-slate-900 border border-slate-700/60 rounded-xl p-5 shadow-sm relative overflow-hidden">
+                  <div key={idx} className="bg-[hsl(220,40%,18%/0.45)] backdrop-blur-xl border border-[hsl(220,50%,40%/0.2)] rounded-xl p-5 shadow-[0_4px_30px_hsl(220,60%,20%/0.15)] relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-1 h-full bg-amber-500/80" />
                     <div className="pl-3">
                       <h4 className="font-display text-base font-bold text-amber-400 mb-1.5">
